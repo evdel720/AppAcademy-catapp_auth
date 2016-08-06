@@ -9,6 +9,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      mail = UserMailer.welcome_email(@user)
+      mail.deliver
       login!(@user)
     else
       flash.now[:errors] ||= []
